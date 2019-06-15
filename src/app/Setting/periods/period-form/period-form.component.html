@@ -1,0 +1,174 @@
+<div class="main-content">
+  <div class="container-fluid">
+
+
+    <div class="row">
+      <div class="col-md-10 mr-auto ml-auto">
+
+        <div class="card">
+
+          <div class="card-header card-header-info">
+            <h3 class="card-title">แบบฟอร์มการตั้งรอบบัญชีเรียกเก็บค่าไฟฟ้า</h3>
+            <p class="card-contegory">กรุณากรอกข้อมูลให้ครบถ้วน และตรวจสอบข้อมูลก่อนบันทึก</p>
+          </div>
+
+          <div class="card-body">
+            <form #peroidForm="ngForm" (ngSubmit)="formSubmit(peroidForm.value)" autocomplete="off"
+              class="form-horizontal">
+              <div class="row">
+                <label class="col-md-3 col-2 col-form-label">รหัสรอบบัญชี :</label>
+                <div class="col-md-9 col-9">
+                  <mat-form-field>
+                    <input matInput name="code" #code="ngModel" ngModel required class="text-right" type="text">
+                    <mat-hint>ตัวอย่าง: 2560-01</mat-hint>
+                    <mat-error>โปรดระบุรหัสรอบบัญชี</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row">
+                <label class="col-md-3 col-2 col-form-label">ชื่อผู้ตั้งรอบบัญชี :</label>
+                <div class="col-md-9 col-9">
+                  <mat-form-field>
+                    <input matInput class="text-right" readonly name="operated_person" #operated_person="ngModel"
+                      ngModel required type="text" />
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row">
+                <label class="col-md-3 col-2 col-form-label">ชื่อรอบบัญชี</label>
+                <div class="col-md-9 col-9">
+                  <mat-form-field>
+                    <input matInput required name="name" #name="ngModel" ngModel required type="text" />
+                    <mat-error>โปรดระบุชื่อรอบบัญชี</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row">
+                <label class="col-md-3 col-2 col-form-label">ปีการศึกษา :</label>
+                <div class="col-md-3 col-9">
+                  <mat-form-field>
+                    <input matInput #edu_year="ngModel" ngModel name="edu_year" required type="text" />
+                    <mat-error>โปรดระบุปีการศึกษา</mat-error>
+                    <mat-hint>เป็นตัวเลข 4 หลัก ปี พ.ศ.</mat-hint>
+                  </mat-form-field>
+                </div>
+
+                <label class="col-md-3 col-2 col-form-label">ภาคเรียน :</label>
+                <div class="col-md-3 col-9">
+                  <mat-form-field>
+                    <input matInput #edu_semester="ngModel" ngModel required name="edu_semester" type="text" />
+                    <mat-hint>เป็นตัวเลข 1 หลัก</mat-hint>
+                    <mat-error>โปรดระบุภาคเรียน</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row">
+                <label class="col-md-3 col-2 col-form-label">วันที่เริ่มชำระ :</label>
+                <div class="col-md-3 col-9">
+                  <mat-form-field>
+                    <input matInput #date_start_pay="ngModel" ngModel name="date_start_pay" required type="date" />
+                    <mat-error>ต้องระบุวันที่เริ่มให้ชำระค่าไฟฟ้า</mat-error>
+                  </mat-form-field>
+                </div>
+
+                <label class="col-md-3 col-2 col-form-label">วันที่ชำระวันสุดท้าย :</label>
+                <div class="col-md-3 col-9">
+                  <mat-form-field>
+                    <input matInput #date_last_pay="ngModel" ngModel required name="date_last_pay" type="date" />
+                    <mat-error>ต้องระบุวันที่ให้ชำระค่าไฟฟ้าวันสุดท้าย</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row">
+                <label class="col-md-3 col-2 col-form-label">วันดาวน์โหลดวันแรก :</label>
+                <div class="col-md-3 col-9">
+                  <mat-form-field>
+                    <input matInput #date_start_download="ngModel" ngModel required name="date_start_download"
+                      type="date" />
+                    <mat-error>ต้องระบุวันที่เปิดให้ดาวน์โหลดใบแจ้งชำระเงิน</mat-error>
+                  </mat-form-field>
+                </div>
+
+                <label class="col-md-3 col-2 col-form-label">วันดาวน์โหลดวันสุดท้าย :</label>
+                <div class="col-md-3 col-9">
+                  <mat-form-field>
+                    <input matInput #date_last_download="ngModel" ngModel required name="date_last_download"
+                      type="date">
+                    <mat-error>ต้องระบุวันที่ปิดให้ดาวน์โหลดใบแจ้งชำระเงิน</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row">
+                <label class="col-md-3 col-2 col-form-label">ราคาค่าไฟฟ้าต่อหน่วย (บาท): </label>
+                <div class="col-md-3 col-9">
+                  <mat-form-field>
+                    <input matInput name="unit_price" #unit_price="ngModel" type="number" ngModel required />
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row">
+                <label class="col-md-3 col-2 col-form-label">ตัวแทนรับชำระ :</label>
+                <div class="col-md-3 col-9">
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input class="form-check-input" #agent_k="ngModel" ngModel name="agent_k" type="checkbox">
+                      ธนาคารกรุงศรีอยุธยา จำกัด (มหาชน)
+                      <span class="form-check-sign">
+                        <span class="check"></span>
+                      </span>
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input class="form-check-input" #agent_c="ngModel" ngModel name="agent_c" type="checkbox"> บริษัท
+                      เคาน์เตอร์เซอร์วิส จำกัด
+                      <span class="form-check-sign">
+                        <span class="check"></span>
+                      </span>
+                    </label>
+                  </div>
+                </div>
+
+                <label class="col-md-3 col-2 col-form-label">รอบบัญชีก่อนหน้า: </label>
+                <div class="col-md-3">
+                  <mat-form-field>
+                    <mat-select placeholder="กรุณาเลือก" required #previous_period="ngModel" name="previous_period"
+                      ngModel>
+                      <mat-option value="-1">ไม่มีรอบบัญชีก่อนหน้า</mat-option>
+                      <mat-option *ngFor="let period of periodList" [value]="period.id">
+                        {{ period.code + ' - ' + period.name }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error>กรุณาเลือก (บังคับ)</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12 text-right">
+                  <hr />
+                  <a class="btn btn-danger" routerLink="/การตั้งค่า/รอบบัญชี" mat-raised-button><i
+                      class="material-icons">cancel</i> ยกเลิก</a>
+                  <button type="submit" [disabled]="peroidForm.invalid || (!agent_k.value && !agent_c.value)"
+                    mat-raised-button class="btn btn-info"><i class="material-icons">save</i> บันทึก</button>
+                </div>
+              </div>
+
+            </form>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>

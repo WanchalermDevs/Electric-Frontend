@@ -1,0 +1,42 @@
+<div class="main-content">
+  <div class="content-fluid">
+
+    <div class="row">
+      <div class="col-md-12">
+
+        <div class="card">
+          <div class="card-header card-header-info">
+            <div class="row">
+              <div class="col-md-6">
+                <h3>แบบฟอร์มการบันทึกหน่วยไฟฟ้าที่ใช้</h3>
+                <p class="card-contegory">
+                  อธิบายเพิ่มเติม
+                </p>
+              </div>
+              <div class="col-md-6 text-right">
+                <button (click)="gotoBack()" mat-raised-button class="btn btn-danger">
+                  <span class="btn-label">
+                    <i class="material-icons">keyboard_arrow_left</i>
+                  </span>
+                  กลับ</button>
+                <button mat-raised-button (click)="btnSave()" class="btn btn-success">
+                  <span class="btn-label">
+                    <i class="material-icons">save</i>
+                  </span>
+                  บันทึก</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-body">
+            <table datatable id="electricalUsedFormTable" class="table table-striped table-no-bordered table-hover"
+              style="width: 100%;"></table>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,73 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <button routerLink="/การตั้งค่า/อาคาร-สถานที่" mat-raised-button class="btn btn-primary btn-round">
+          <i class="material-icons">reply</i> กลับไปหน้าอาคาร/สถานที่
+        </button>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-8 ml-auto mr-auto">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">ข้อมูลห้องพัก/ร้านค้า</h3>
+            <h5 class="card-description">กรุณาระบุข้อมูลห้องพักหรือร้านค้า ที่ท่านต้องการเพิ่มข้อมูล แล้วกดปุ่มบันทึก</h5>
+          </div>
+
+          <div class="card-body">
+            <form #levelForm="ngForm" autocomplete="off" (ngSubmit)="onSubmit(levelForm.value); levelForm.reset();"
+              class="form-horizontal">
+
+              <!-- Input select building -->
+              <div class="row">
+                <label class="col-md-3 col-2 col-form-label">อาคาร</label>
+                <div class="col-md-9 col-9">
+                  <mat-form-field>
+                    <mat-select required placeholder="กรุณาเลือกอาคาร" ngModel #parentID="ngModel" name="parentID">
+                      <mat-option *ngFor="let building of buildingList" [value]="building.id">
+                        {{ building.code + ' ' + building.text }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error>กรุณาเลือกอาคาร</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <!-- Input level code -->
+              <div class="row">
+                <label class="col-md-3 col-3 col-form-label">รหัสห้อง/รหัสร้าน</label>
+                <div class="col-md-9 col-9">
+                  <mat-form-field>
+                    <input matInput type="text" minlength="3" maxlength="3" #code="ngModel" ngModel name="code" pattern="^[0-9]{0,3}$" required />
+                    <mat-error>กรุณาระบุรหัสห้องหรือรหัสร้านค้าเป็นตัวเลข 3 หลัก</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <!-- Input level name -->
+              <div class="row">
+                <label class="col-md-3 col-3 col-form-label">ชื่อห้อง/ชื่อร้าน</label>
+                <div class="col-md-9 col-9">
+                  <mat-form-field>
+                    <input matInput type="text" #name="ngModel" ngModel name="name" required />
+                    <mat-error>กรุณาระบุชื่อห้องพักหรือร้านค้า</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <!-- Button Submit -->
+              <div class="row">
+                <div class="col-md-12 col-12 text-right">
+                  <button type="submit" [disabled]="!levelForm.valid" mat-raised-button class="btn btn-primary btn-round"><i class="material-icons">save</i> บันทึก</button>
+                </div>
+              </div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

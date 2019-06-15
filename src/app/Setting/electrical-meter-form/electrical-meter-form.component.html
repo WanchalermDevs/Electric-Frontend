@@ -1,0 +1,68 @@
+<div class="main-content">
+  <div class="container-fluid">
+
+    <div class="row">
+
+      <div class="col-md-6 ml-auto mr-auto">
+        <div class="card">
+
+          <div class="card-header card-header-info">
+            <h3 class="card-title">แบบฟอร์มมิเตอร์ไฟฟ้า</h3>
+          </div>
+
+          <div class="card-body">
+            <form #electricalMeterForm="ngForm" autocomplete="off" (ngSubmit)="formSubmit(electricalMeterForm.value)"
+              class="form-horizontal">
+
+              <div class="row">
+                <div class="col-md-4 col-2 col-form-label">
+                  รหัสมิเตอร์ไฟฟ้า :
+                </div>
+                <div class="col-md-8">
+                  <mat-form-field>
+                    <input matInput type="text" name="code" pattern="^[0-9]{3}$" maxlength="3" #code="ngModel" ngModel [value]="" required />
+                    <mat-error>กรุณาระบุรหัสของมิเตอร์ไฟฟ้า เป็นตัวเลข 3 หลัก</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-4 col-2 col-form-label">
+                  ชื่อมิเตอร์ :
+                </div>
+                <div class="col-md-8">
+                  <mat-form-field>
+                    <input matInput type="text" name="text" required #text="ngModel" ngModel />
+                    <mat-error>กรุณากรอกชื่อมิเตอร์ไฟฟ้า</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-4 col-2 col-form-label">
+                  รายละเอี่ยดเพิ่มเติม :
+                </div>
+                <div class="col-md-8">
+                  <mat-form-field>
+                    <input matInput type="text" #note="ngModel" ngModel name="note">
+                  </mat-form-field>
+                </div>
+              </div>
+              
+              <div class="row">
+                <div class="col-md-12 text-right">
+                    <a mat-raised-button routerLink="/การตั้งค่า/มิเตอร์" class="btn btn-danger"><i class="material-icons">cancel</i> ยกเลิก</a>
+                  <button type="submit" [disabled]="electricalMeterForm.invalid" mat-raised-button class="btn btn-success"><i class="material-icons">save</i> บันทึก</button>
+                </div>
+              </div>
+
+            </form>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>

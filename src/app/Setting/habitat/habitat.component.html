@@ -1,0 +1,33 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+
+      
+
+      <div class="col-md-4 mr-auto ml-auto">
+        <div class="card">
+          <div class="card-header card-header-tabs card-header-rose">
+            <div class="nav-tabs-navigation">
+              <div class="nav-tabs-wrapper">
+                <h4><span class="nav-tabs-title">การตั้งค่า-การจัดการสถานที่/พื้นที่เช่า</span></h4>
+              </div>
+            </div>
+          </div>
+          <div class="card-body table-responsive">
+            <table class="table table-hover">
+              <tbody>
+                <tr *ngFor="let row of menuOption;">
+                  <td>{{ row.name }}</td>
+                  <td class="text-right"><a (click)="routerLink(row.link)" mat-raised-button mat-min-fab
+                      class="btn btn-reddit btn-just-icon btn-round"><i class="material-icons">{{ row.icon }}</i></a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

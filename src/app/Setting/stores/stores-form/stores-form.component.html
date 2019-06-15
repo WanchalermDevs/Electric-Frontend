@@ -1,0 +1,98 @@
+<div class="main-content">
+    <div class="content-fluid">
+  
+      <div class="row">
+        <div class="col-md-8 mr-auto ml-auto">
+  
+          <div class="card">
+            <div class="card-header card-header-success">
+              <div class="row">
+                <div class="col-md-6">
+                  <h3 class="card-title">แบบฟอร์มสร้างข้อมูลห้องพัก</h3>
+                  <p class="card-contegory">กรุณากรอกข้อมูลให้ถูกต้อง และครบถ้วน</p>
+                </div>
+                <div class="col-md-6 text-right">
+                    <a mat-raised-button mat-min-fab routerLink="/การตั้งค่า/เพิ่มข้อมูลอาคาร"
+                    class="btn btn-info">
+                    + <i class="material-icons">business</i> เพิ่มอาคาร
+                  </a>
+                </div>
+              </div>
+            </div>
+  
+            <div class="card-body">
+              <form #roomForm="ngForm" autocomplete="off"
+                (ngSubmit)="roomSubmit(roomForm.value);" class="form-horizontal">
+  
+                <div class="row">
+                  <div class="col-md-3 col-2 col-form-label">อาคาร</div>
+                  <div class="col-md-9 col-9">
+                    <mat-form-field>
+                      <mat-select placeholder="เลือกอาคาร" required #buildingID="ngModel" name="buildingID" ngModel>
+                        <mat-option *ngFor="let building of buildingList" [value]="building.id">
+                          {{ building.code + ' - ' + building.text }}
+                        </mat-option>
+                      </mat-select>
+                      <mat-error>กรุณาเลือก (บังคับ)</mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+  
+                <div class="row">
+                  <div class="col-md-3 col-2 col-form-label">รหัสห้อง</div>
+                  <div class="col-md-9 col-9">
+                    <mat-form-field>
+                      <input matInput #roomCode="ngModel" ngModel name="roomCode" required type="text" maxlength="3"
+                        minlength="3" matTooltip="*เป็นตัวเลขเท่านั้น 3 หลัก" [matTooltipPosition]="'right'"
+                        pattern="^[0-9]{0,3}$" />
+                      <mat-error>กรุณากรอกข้อมูล</mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+  
+                <div class="row">
+                  <div class="col-md-3 col-2 col-form-label">ชื่อห้อง/ร้านค้า</div>
+                  <div class="col-md-9 col-9">
+                    <mat-form-field>
+                      <input type="text" #roomName="ngModel" ngModel name="roomName" required minlength="1" matInput />
+                      <mat-error>กรุณากรอกข้อมูล</mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+  
+                <div class="row">
+                  <div class="col-md-3 col-2 col-form-label">มิเตอร์ไฟฟ้า :</div>
+                  <div class="col-md-9 col-9">
+                    <mat-form-field>
+                      <mat-select placeholder="เลือกอาคาร" required #buildingID="ngModel" name="meterID" ngModel>
+                        <mat-option *ngFor="let meter of meterList" [value]="meter.id">
+                          {{ meter.code + ' - ' + meter.text }}
+                        </mat-option>
+                      </mat-select>
+                      <mat-error>กรุณาเลือก (บังคับ)</mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+  
+                <div class="row">
+                  <div class="col-md-12 text-right">
+                      <hr />
+                      <a class="btn btn-danger" routerLink="/การตั้งค่า/ห้องพัก" mat-raised-button><i
+                          class="material-icons">cancel</i> ยกเลิก</a>
+                    <button type="submit" id="btn-submit" [disabled]="roomForm.invalid" mat-raised-button
+                      class="btn btn-info">
+                      <i class="material-icons">save</i> บันทึก
+                    </button>
+                  </div>
+                </div>
+  
+              </form>
+            </div>
+  
+          </div>
+  
+        </div>
+      </div>
+  
+    </div>
+  </div>

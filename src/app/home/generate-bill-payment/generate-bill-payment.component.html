@@ -1,0 +1,263 @@
+<div class="main-content">
+  <div class="container-fluid">
+
+    <div class="row">
+      <div class="col-md-7">
+
+        <div class="card">
+          <div class="card-header card-header-info card-header-text">
+            <div class="card-text">
+              <h4 class="card-title">ข้อมูลรอบบัญชี</h4>
+            </div>
+          </div>
+
+
+          <div class="card-body">
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="description">
+                  <h4 class="info-title text-success">รหัส-ชื่อรอบบัญชี</h4>
+                  <h3>
+                    <p class="description ">
+                      <strong>{{ periodInfo.code }} {{ periodInfo.name }}</strong>
+                    </p>
+                  </h3>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+
+                <div class="description">
+                  <h4 class="info-title text-success">วันเริ่มชำระ</h4>
+                  <p class="description">
+                    {{ periodInfo.date_start_pay }}
+                  </p>
+                </div>
+
+                <div class="description">
+                  <h4 class="info-title text-success">วันที่เริ่มให้ดาวน์โหลดใบแจ้งชำระเงิน</h4>
+                  <p class="description">
+                    {{ periodInfo.date_start_download }}
+                  </p>
+                </div>
+
+                <div class="description">
+                  <h4 class="info-title text-success">ตัวแทนรับชำระเงิน</h4>
+                  <p class="description" *ngIf="(periodInfo.agent.agent_k)">
+                    ธนาคารกรุงศรีอยุธยา จำกัด (มหาชน)
+                  </p>
+                  <p class="description" *ngIf="(periodInfo.agent.agent_c)">
+                    บริษัท เคาน์เตอร์เซอร์วิส จำกัด
+                  </p>
+                </div>
+
+              </div>
+
+              <div class="col-md-6">
+
+                <div class="description">
+                  <h4 class="info-title text-success">วันที่ชำระวันสุดท้าย</h4>
+                  <p class="description">
+                    {{ periodInfo.date_last_pay }}
+                  </p>
+                </div>
+
+                <div class="description">
+                  <h4 class="info-title text-success">วันสุดท้ายที่ให้ดาวน์โหลดใบแจ้งชำระเงิน</h4>
+                  <p class="description">
+                    {{ periodInfo.date_last_download }}
+                  </p>
+                </div>
+
+                <div class="description">
+                  <h4 class="info-title text-success">ราคาค่าไฟฟ้าต่อหน่วย</h4>
+                  <p class="description">
+                    {{ periodInfo.unit_price }} บาท/หน่วย
+                  </p>
+                </div>
+
+              </div>
+
+            </div>
+
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="col-md-5">
+        <div class="card">
+          <div class="card-header card-header-info">
+            <h4 class="card-title">ค้นข้อมูล</h4>
+          </div>
+          <div class="card-body">
+            <form #searchMeterForm="ngForm" autocomplete="off" (ngSubmit)="searchMeter(searchMeterForm.value)"
+              class="form-horizontal">
+              <div class="row">
+                <div class="col-md-3 col-2 col-form-label">
+                  มิเตอร์ :
+                </div>
+                <div class="col-md-9">
+                  <mat-form-field>
+                    <mat-select placeholder="เลือกอาคาร" required #buildingID="ngModel" name="meterID" ngModel>
+                      <mat-option *ngFor="let meter of meterList; let i = index" [value]="i">
+                        {{ meter.code + ' - ' + meter.text }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error>กรุณาเลือก (บังคับ)</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12">
+                  <button type="submit" class="btn btn-primary btn-block">
+                    <i class="material-icons">search</i> ค้นหา
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="meter !== undefined">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header card-header-success">
+            <h4 class="card-title">ตารางสรุปค่าไฟฟฟ้า ของมิเตอร์: <b><i>{{ meter.code }}-{{ meter.text }}</i> (ค่ารักษามิเตอร์ {{ meter_fee }} บาท)</b>
+            </h4>
+            <hr >
+            <div class="row">
+              <div class="col-md-2 text-right">
+                <p>ประเภท :</p>
+                <p>หน่วยเก่า :</p>
+                <p>หน่วยใหม่ :</p>
+                <p>จำนวนหน่วยที่ใช้ :</p>
+                <p>จำนวนผู้ชำระ :</p>
+              </div>
+
+              <div class="col-md-2 ">
+                <p>{{ meter_fee_type }}</p>
+                <p>{{ electricUsed.oldUnit }}</p>
+                <p>{{ electricUsed.currentUnit }}</p>
+                <p>{{ uinitUsed }} หน่วย</p>
+                <p>{{ billPaymentList.length }} คน</p>
+              </div>
+
+              <div class="col-md-4 text-right">
+                <p>จำนวนเงินที่ต้องเรียกเก็บ :</p>
+                <p>จำนวนเงินที่ออกใบแจ้งชำระเงิน :</p>
+                <p>สถานะ :</p>
+                <p>ราคาเฉลี่ยต่อคน :</p>
+                <p>ผู้ชำระค่ามิเตอร์ :</p>
+              </div>
+
+              <div class="col-md-4">
+                <p>{{ totalPriceMustPay }} บาท</p>
+                <p> {{ totalPrice }} บาท</p>
+                <p *ngIf="totalPriceMustPay == totalPrice" class="text-info">ครบจำนวน</p>
+                <p *ngIf="totalPriceMustPay > totalPrice" class="text-warning">ขาดอีก
+                  {{ totalPriceMustPay - totalPrice }} บาท</p>
+                <p *ngIf="totalPriceMustPay < totalPrice" class="text-warning">เกินไป
+                  {{ totalPrice - totalPriceMustPay }} บาท</p>
+                <p>{{ averagePrice }}</p>
+                <p *ngIf="!(payMetername == '')">{{ payMetername }}</p>
+                <p class="text-danger" *ngIf="payMetername == ''">ไม่กำหนดผู้ชำระค่ามิเตอร์</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-body">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <td>
+                    <h5>ลำดับ</h5>
+                  </td>
+                  <td>
+                    <h5>ห้อง</h5>
+                  </td>
+                  <td>
+                    <h5>รหัสประจำตัวนักเรียน</h5>
+                  </td>
+                  <td>
+                    <h5>ชื่อ-นามสกุล</h5>
+                  </td>
+                  <td>
+                    <h5>ยอดเงิน</h5>
+                  </td>
+                  <td>
+                    <h5>เพิ่มเงิน 1 บาท</h5>
+                  </td>
+                  <td>
+                    <h5>ค่ามิเตอร์ {{ meter_fee }} บาท</h5>
+                  </td>
+                </tr>
+              </thead>
+              <tbody *ngIf="billPaymentList.length > 0">
+                <tr *ngFor="let bill of billPaymentList; let i = index;">
+                  <td>{{ (i+1) }}</td>
+                  <td>{{ bill.roomName }}</td>
+                  <td>{{ bill.studentCode }}</td>
+                  <td>{{ bill.studentName }}</td>
+                  <td>{{ bill.amount }}</td>
+                  <td>
+                    <div class="togglebutton">
+                      <label>
+                        <input (click)="increasePay(increase.id, increase.checked)" #increase class="increase"
+                          [id]="bill.studentCode" type="checkbox" [checked]="false">
+                        <span class="toggle"></span>
+                        เพิ่ม 1 บาท
+                      </label>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="form-check">
+                      <label class="form-check-label">
+                        <input class="form-check-input" (click)="payMeter(meter_pay.value)" #meter_pay
+                          name="meter_pay" [value]="bill.studentCode" [id]="'meter-' + bill.studentCode" type="radio" [checked]="false"> เพิ่ม 5
+                        บาท
+                        <span class="circle">
+                          <span class="check"></span>
+                        </span>
+
+                      </label>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <hr>
+            </div>
+          </div>
+
+          <div class="row card-footer">
+
+            <div class="col-md-10">
+              ข้าพเจ้า <i>{{ myname }}</i> ตรจสอบข้อมูลพบว่าทุกอย่างถูกต้องแล้ว จึงขอออกใบแจ้งชำระเงิน
+            </div>
+
+            <div class="col-md-2 text-right">
+
+              <button type="submit" [disabled]="!(totalPriceMustPay == totalPrice)" class="btn btn-primary">
+                <i class="material-icons">file_copy</i> ออกใบแจ้งชำระเงิน
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
