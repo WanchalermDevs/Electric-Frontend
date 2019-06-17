@@ -4,32 +4,17 @@ import { Http, Response, Headers } from '@angular/http';
 @Injectable({
   providedIn: 'root'
 })
-export class RenterService {
+export class DormitoryLiveService {
   host: string;
 
   constructor(private _http: Http) {
-    this.host = 'http://localhost:3000/renter';
+    this.host = 'http://localhost:3000/dormitory-live';
   }
 
-  getStudentInfo(studentCode, year) {
-    return new Promise((resolve, reject) => {
-      const param = {
-        edu_year: year,
-        student_code: studentCode
-      };
-      let headers;
-      headers = new Headers();
-      headers.append('Content-Type', 'application/x-www-form-urlencoded');
-      return this._http.post('http://www.satit.nu.ac.th/node/student/getStudentbyStudentCode', this.packParameter(param), { headers: headers }).pipe().subscribe(res => {
-        resolve(res.json());
-      });
-    });
+  recordStudentDorminitory(param) {
+    return this._Post('/', param);
   }
-
-  getDormitoryStudentsList(edu_year, edu_semester) {
-    return this._Get('/students/' + window.localStorage.getItem('token') + '/' + edu_year + '/' + edu_semester);
-  }
-
+  
   private _Delete(queryString) {
     return new Promise((resolve, reject) => {
       let headers;

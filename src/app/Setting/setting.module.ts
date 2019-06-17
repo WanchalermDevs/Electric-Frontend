@@ -25,6 +25,8 @@ import { RoomInfoComponent } from '../Setting/rooms/room-info/room-info.componen
 import { RoomFormComponent } from '../Setting/rooms/room-form/room-form.component';
 import { StoresComponent } from '../Setting/stores/stores/stores.component';
 import { StoresFormComponent } from '../Setting/stores/stores-form/stores-form.component';
+import { StudentDormTableComponent } from '../Setting/student-dorm-table/student-dorm-table.component';
+import { StudentDormFormComponent } from '../Setting/student-dorm-form/student-dorm-form.component';
 
 @NgModule({
     imports: [
@@ -55,6 +57,8 @@ import { StoresFormComponent } from '../Setting/stores/stores-form/stores-form.c
         RoomFormComponent,
         StoresComponent,
         StoresFormComponent,
+        StudentDormTableComponent,
+        StudentDormFormComponent,
     ]
 })
 export class SettingModule { }

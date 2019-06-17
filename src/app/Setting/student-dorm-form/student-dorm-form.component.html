@@ -1,0 +1,105 @@
+<div class="main-content">
+  <div class="container-fluid">
+
+    <div class="row">
+      <div class="col-md-8 ml-auto mr-auto">
+
+        <div class="card">
+          <div class="card-header card-header-info">
+            <h3 class="card-title">แบบฟอร์มนักเรียนหอพัก</h3>
+            <p class="card-description">กรุณากรองข้อมูลของนักเรียนหอพักให้ถูกต้องและครบถ้วน</p>
+          </div>
+
+          <div class="card-body">
+
+            <form #studentForm="ngForm" (ngSubmit)="studentFormSubmit(studentForm.value)" autocomplete="off"
+              class="form-horizontal">
+
+              <div class="row">
+                <div class="col-md-2 col-2 col-form-label">
+                  ปีการศึกษา :
+                </div>
+                <div class="col-md-4">
+                  <mat-form-field>
+                    <input type="text" minlength="4" matInput #year="ngModel" ngModel name="year" required />
+                    <mat-error>กรุณาระบุปีการศึกษา</mat-error>
+                  </mat-form-field>
+                </div>
+
+                <div class="col-md-2 col-2 col-form-label">
+                  ภาคเรียน :
+                </div>
+                <div class="col-md-4">
+                  <mat-form-field>
+                    <input type="text" minlength="1" matInput #semester="ngModel" ngModel name="semester" required />
+                    <mat-error>กรุณาระบุภาคเรียน</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-4 col-2 col-form-label">
+                  เลือห้องพัก :
+                </div>
+                <div class="col-md-8">
+                  <mat-form-field>
+                    <mat-select placeholder="เลือกอาคาร" required #buildingID="ngModel" name="buildingID" ngModel>
+                      <mat-option *ngFor="let building of buildingList; let i = index" [value]="i">
+                        {{ building.code + ' - ' + building.text }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error>กรุณาเลือก (บังคับ)</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-4 col-2 col-form-label">
+                  รหัสนักเรียน :
+                </div>
+                <div class="col-md-6">
+                  <mat-form-field>
+                    <input type="text" minlength="8" matInput #studentCode="ngModel" ngModel name="studentCode"
+                      required />
+                    <mat-error>กรุณาระบุรหัสนักเรียน</mat-error>
+                  </mat-form-field>
+                </div>
+                <label class="col-sm-2 label-on-right">
+                  <a (click)="loadStudent(studentCode.value, year.value)" *ngIf="!(year.invalid || semester.invalid || studentCode.invalid)" mat-raised-button mat-min-fab
+                    class="btn btn-primary btn-sm btn-round ">
+                    <i class="material-icons">search</i> โหลด
+                  </a>
+                  <button  *ngIf="(year.invalid || semester.invalid || studentCode.invalid)" [disabled]="true" mat-raised-button mat-min-fab
+                    class="btn btn-primary btn-sm btn-round ">
+                    <i class="material-icons">search</i> โหลด
+                </button>
+                </label>
+              </div>
+              <div class="row">
+                <div class="col-md-4 col-2 col-form-label">
+                  ชื่อ - นามสกุล
+                </div>
+                <div class="col-md-8">
+                  <mat-form-field>
+                    <input type="text" disabled #stdName matInput readonly="true" [value]="studentName" />
+                  </mat-form-field>
+                </div>
+              </div>
+              <hr />
+              <div class="row">
+                <div class="col-md-12 text-right">
+                  <button class="btn btn-success btn-block" [disabled]="(stdName.value === '') || buildingID.invalid" type="submit">บันทึก</button>
+                </div>
+              </div>
+            </form>
+
+          </div>
+
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -20,6 +20,9 @@ import { combineAll } from 'rxjs/operators';
 import { StoresComponent } from './stores/stores/stores.component';
 import { StoresFormComponent } from './stores/stores-form/stores-form.component';
 
+import { StudentDormTableComponent } from './student-dorm-table/student-dorm-table.component';
+import { StudentDormFormComponent } from './student-dorm-form/student-dorm-form.component';
+
 
 export const SettingRoutes: Routes = [
     {
@@ -84,7 +87,16 @@ export const SettingRoutes: Routes = [
             {
                 path: 'ร้านค้า/แบบฟอร์มร้านค้า',
                 component: StoresFormComponent
+            },
+            {
+                path: 'ตารางนักเรียนหอพัก',
+                component: StudentDormTableComponent
+            },
+            {
+                path: 'แบบฟอร์มนักเรียนหอพัก',
+                component: StudentDormFormComponent
             }
+
         ]
     }
 ];
