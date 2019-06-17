@@ -20,6 +20,7 @@ export class RenterService {
       let headers;
       headers = new Headers();
       headers.append('Content-Type', 'application/x-www-form-urlencoded');
+      // tslint:disable-next-line:max-line-length
       return this._http.post('http://www.satit.nu.ac.th/node/student/getStudentbyStudentCode', this.packParameter(param), { headers: headers }).pipe().subscribe(res => {
         resolve(res.json());
       });

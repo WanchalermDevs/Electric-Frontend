@@ -18,4 +18,12 @@ export class PDFGenteratorService {
     return this.http.post(this.host, body, { headers: headers, responseType: ResponseContentType.Blob });
     // return this.http.post(this.host, body, { headers: headers });
   }
+
+  downloadExcel() {
+    const body = {} ;
+    let headers;
+    headers = new Headers();
+    headers.append('Content-Type', 'application/json; charset=utf-8');
+    return this.http.post('http://localhost:3000/download/sum-meter', body, { headers: headers, responseType: ResponseContentType.Blob });
+  }
 }

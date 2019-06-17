@@ -11,10 +11,22 @@ export class DormitoryLiveService {
     this.host = 'http://localhost:3000/dormitory-live';
   }
 
+  removeStudentDorm(id) {
+    const param = {
+      token: window.localStorage.getItem('token'),
+      id: id
+    };
+    return this._Delete('/' + window.localStorage.getItem('token') + '/' + id);
+  }
+
+  getAllStudentDorm(year, semester) {
+    return this._Get('/' + window.localStorage.getItem('token') + '/' + year + '/' + semester);
+  }
+
   recordStudentDorminitory(param) {
     return this._Post('/', param);
   }
-  
+
   private _Delete(queryString) {
     return new Promise((resolve, reject) => {
       let headers;

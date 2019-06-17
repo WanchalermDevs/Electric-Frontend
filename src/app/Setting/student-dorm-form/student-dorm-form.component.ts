@@ -3,6 +3,7 @@ import { HabitatService } from '../../services/habitat.service';
 import { RenterService } from '../../services/renter.service';
 import { NgForm } from '@angular/forms';
 import { DormitoryLiveService } from '../../services/dormitory-live.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-student-dorm-form',
@@ -17,7 +18,8 @@ export class StudentDormFormComponent implements OnInit {
   constructor(
     private habitatService: HabitatService,
     private renter: RenterService,
-    private dormitoryLiveService: DormitoryLiveService
+    private dormitoryLiveService: DormitoryLiveService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -37,21 +39,26 @@ export class StudentDormFormComponent implements OnInit {
       booking_code: this.studentInfo['student_code'] + '-' + form['year'] + '-' + form['semester']
     };
     this.dormitoryLiveService.recordStudentDorminitory(param).then(response => {
-      console.log(response);
-    })
+      // console.log(response);
+      if (response['operation'] === 'success') {
+        this.router.navigateByUrl('/การตั้งค่า/ตารางนักเรียนหอพัก');
+      } else {
+
+      }
+    });
   }
 
   setBuildingSelector() {
     this.habitatService.getAllRoom().then(response => {
-      console.log('Room: ', response);
+      // console.log('Room: ', response);
       this.buildingList = response;
     });
   }
 
   loadStudent(studentCode, year) {
-    console.log(studentCode);
+    // console.log(studentCode);
     this.renter.getStudentInfo(studentCode, year).then(response => {
-      console.log(response['info'][0]);
+      // console.log(response['info'][0]);
       const student = response['info'][0];
       this.studentInfo = student;
       this.studentName = student['student_pre_name'] + student['student_first_name'] + ' ' + student['student_last_name'];

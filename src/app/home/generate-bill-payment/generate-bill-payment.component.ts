@@ -4,8 +4,11 @@ import { HabitatService } from '../../services/habitat.service';
 import { PDFGenteratorService } from '../../services/pdfgenterator.service';
 import { PeriodService } from '../../services/period.service';
 import { RenterService } from '../../services/renter.service';
+import { DormitoryLiveService } from '../../services/dormitory-live.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
+import * as moment from 'moment';
+
 
 @Component({
   selector: 'app-generate-bill-payment',
@@ -40,10 +43,11 @@ export class GenerateBillPaymentComponent implements OnInit {
   constructor(
     private electricalMeterService: ElectricalMeterService,
     private habitatService: HabitatService,
-    private pdfGeneratorService: PDFGenteratorService,
+    private pdfGenterator: PDFGenteratorService,
     private periodService: PeriodService,
     private renterService: RenterService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private dormitoryLiveService: DormitoryLiveService
   ) { }
 
   ngOnInit() {
@@ -54,13 +58,15 @@ export class GenerateBillPaymentComponent implements OnInit {
         this.periodInfo = periodResponse['list'][0];
         this.periodInfo['agent'] = JSON.parse(this.periodInfo['agent']);
         this.periodInfo['unit_price'] = parseInt(this.periodInfo['unit_price'], 10).toFixed(2);
-        console.log(this.periodInfo);
+        // console.log(this.periodInfo);
         this.setOleUnit();
         this.electricalMeterService.getElecticalMeterList().then(meterResponse => {
           this.meterList = meterResponse['list'];
         });
+
         // tslint:disable-next-line:max-line-length
-        this.renterService.getDormitoryStudentsList(this.periodInfo['edu_year'], this.periodInfo['edu_semester']).then(responseStudentList => {
+        this.dormitoryLiveService.getAllStudentDorm(this.periodInfo['edu_year'], this.periodInfo['edu_semester']).then(responseStudentList => {
+          // ค้นหารายชื่อนักเรียนหอพักที่นี่
           // console.log(responseStudentList);
           this.studentList = responseStudentList['list'];
         });
@@ -105,7 +111,7 @@ export class GenerateBillPaymentComponent implements OnInit {
           }
           this.pushBillPaymentList(element, this.buildingList[element['parent_id']]['text']);
         });
-        console.log('จำนวนักเรียน :', this.billPaymentList);
+        // console.log('จำนวนักเรียน :', this.billPaymentList);
         this.uinitUsed = this.electricUsed.currentUnit - this.electricUsed.oldUnit;
         this.totalPriceMustPay = (this.uinitUsed * this.periodInfo['unit_price']);
         this.averagePrice = await Math.floor(this.totalPriceMustPay / this.billPaymentList.length);
@@ -120,7 +126,7 @@ export class GenerateBillPaymentComponent implements OnInit {
 
   async setOleUnit() {
     if (this.periodInfo['previous_period'] === -1) {
-      console.log('previous_period is null');
+      // console.log('previous_period is null');
     } else {
       await this.periodService.getElectricUsedList(this.periodInfo['previous_period']).then(responseOldList => {
         if (responseOldList['list'].length > 0) {
@@ -190,7 +196,7 @@ export class GenerateBillPaymentComponent implements OnInit {
           this.billPaymentList[index]['amount'] += 5;
         }
       });
-      console.log('ปรับใหม่ ', this.billPaymentList);
+      // console.log('ปรับใหม่ ', this.billPaymentList);
     }
   }
 
@@ -198,47 +204,88 @@ export class GenerateBillPaymentComponent implements OnInit {
     if (room['type'] === 'Room') {
       // console.log('หอพัก: ', this.studentList);
       this.studentList.forEach(student => {
-        if (student['student_dormitory_payment_status'] === 'ชำระเงินแล้ว') {
-          // tslint:disable-next-line:max-line-length
-          const studentLiveRoom = student['student_dormitory_building'] + student['student_dormitory_floor'] + student['student_dormitory_room'];
-          const roomCheck = buildingName + room['code'];
-          if (studentLiveRoom === roomCheck) {
-            // console.log(roomCheck, student['student_dormitory_name']);
-            const tempInfo = {
-              type: room['type'],
-              ref1: '',
-              ref2: '',
-              pn: '',
-              roomName: roomCheck,
-              studentCode: student['student_dormitory_student_code'],
-              studentName: student['student_dormitory_name'],
-              period_id: this.periodInfo['id'],
-              period_code: this.periodInfo['code'],
-              period_name: this.periodInfo['name'],
-              date_pay_start: this.periodInfo['date_start_pay'],
-              date_pay_end: this.periodInfo['date_last_pay'],
-              agent: JSON.stringify(this.periodInfo['agent']),
-              electric_amount: 0,
-              increase: false,
-              meter_fee: false,
-              meter_id: this.meter['id'],
-              officer: window.localStorage.getItem('thai_name'),
-              officer_position: window.localStorage.getItem('user_position'),
-              token: window.localStorage.getItem('token'),
-              edu_year: this.periodInfo['edu_year'],
-              edu_semester: this.periodInfo['edu_semester'],
-              room_id: room['id'],
-              room_code: room['code'],
-              room_name: room['text'],
-              amount: 0,
-            };
-            this.billPaymentList.push(tempInfo);
-          }
+        // console.log(student);
+        // tslint:disable-next-line:max-line-length
+        const studentLiveRoom = student['habitat_id'];
+        const roomCheck = room['id'];
+        // console.log(roomCheck);
+        if (studentLiveRoom === roomCheck) {
+          // console.log(roomCheck, student['student_dormitory_name']);
+          const tempInfo = {
+            type: room['type'],
+            ref1: '',
+            ref2: '',
+            pn: '',
+            roomName: roomCheck,
+            studentCode: student['student_code'],
+            studentName: student['student_name'],
+            period_id: this.periodInfo['id'],
+            period_code: this.periodInfo['code'],
+            period_name: this.periodInfo['name'],
+            date_pay_start: this.periodInfo['date_start_pay'],
+            date_pay_end: this.periodInfo['date_last_pay'],
+            agent: JSON.stringify(this.periodInfo['agent']),
+            electric_amount: 0,
+            increase: false,
+            meter_fee: false,
+            meter_id: this.meter['id'],
+            officer: window.localStorage.getItem('thai_name'),
+            officer_position: window.localStorage.getItem('user_position'),
+            token: window.localStorage.getItem('token'),
+            edu_year: this.periodInfo['edu_year'],
+            edu_semester: this.periodInfo['edu_semester'],
+            room_id: room['id'],
+            room_code: room['code'],
+            room_name: room['text'],
+            amount: 0,
+          };
+          this.billPaymentList.push(tempInfo);
         }
       });
     } else if (room['type'] === 'Stores') {
-      
+
     }
+  }
+
+  downloadFile() {
+    const filename = 'excel-' + moment() + '.xlsx';
+    this.pdfGenterator.downloadExcel().subscribe(
+      (data) => {
+        console.log(data);
+        // saveAs(data, filename);
+        const a = document.createElement('a');
+        // a.style = "display: none";
+        const blob = new Blob([data.blob()], { type: 'octet/stream' });
+        const url = window.URL.createObjectURL(blob);
+        a.href = url;
+        a.download = filename;
+        a.click();
+        window.URL.revokeObjectURL(url);
+      },
+      err => {
+        alert('Problem while downloading the file.');
+        console.error(err);
+      }
+    );
+    // const filename = 'testFile-2.pdf';
+    // this.pdfGenterator.downloadReport(filename).subscribe(
+    //   (data) => {
+    //     console.log(data);
+    //     // saveAs(data, filename);
+    //     const a = document.createElement('a');
+    //     // a.style = "display: none";
+    //     const blob = new Blob([data.blob()], {type: 'octet/stream'});
+    //     const url = window.URL.createObjectURL(blob);
+    //     a.href = url;
+    //     a.download = filename;
+    //     a.click();
+    //     window.URL.revokeObjectURL(url);
+    //   },
+    //   err => {
+    //     alert('Problem while downloading the file.');
+    //     console.error(err);
+    //   }
+    // );
   }
 
 }
