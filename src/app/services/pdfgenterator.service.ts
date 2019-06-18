@@ -19,8 +19,12 @@ export class PDFGenteratorService {
     // return this.http.post(this.host, body, { headers: headers });
   }
 
-  downloadExcel() {
-    const body = {} ;
+  downloadExcel(period_id, meter_id) {
+    const body = {
+      token: window.localStorage.getItem('token'),
+      period_id: period_id,
+      meter_id: meter_id
+    } ;
     let headers;
     headers = new Headers();
     headers.append('Content-Type', 'application/json; charset=utf-8');

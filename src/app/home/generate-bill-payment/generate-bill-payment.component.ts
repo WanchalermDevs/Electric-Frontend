@@ -5,6 +5,7 @@ import { PDFGenteratorService } from '../../services/pdfgenterator.service';
 import { PeriodService } from '../../services/period.service';
 import { RenterService } from '../../services/renter.service';
 import { DormitoryLiveService } from '../../services/dormitory-live.service';
+import { BillPaymentService } from '../../services/bill-payment.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import * as moment from 'moment';
@@ -47,7 +48,8 @@ export class GenerateBillPaymentComponent implements OnInit {
     private periodService: PeriodService,
     private renterService: RenterService,
     private activatedRoute: ActivatedRoute,
-    private dormitoryLiveService: DormitoryLiveService
+    private dormitoryLiveService: DormitoryLiveService,
+    private billPaymentService: BillPaymentService
   ) { }
 
   ngOnInit() {
@@ -67,7 +69,7 @@ export class GenerateBillPaymentComponent implements OnInit {
         // tslint:disable-next-line:max-line-length
         this.dormitoryLiveService.getAllStudentDorm(this.periodInfo['edu_year'], this.periodInfo['edu_semester']).then(responseStudentList => {
           // ค้นหารายชื่อนักเรียนหอพักที่นี่
-          // console.log(responseStudentList);
+          console.log(responseStudentList);
           this.studentList = responseStudentList['list'];
         });
 
@@ -248,8 +250,13 @@ export class GenerateBillPaymentComponent implements OnInit {
   }
 
   downloadFile() {
+
+    // this.billPaymentService.createBillPament(this.billPaymentList).then(billResponse => {
+    //   console.log(billResponse);
+    // });
+    
     const filename = 'excel-' + moment() + '.xlsx';
-    this.pdfGenterator.downloadExcel().subscribe(
+    this.pdfGenterator.downloadExcel(16, 50).subscribe(
       (data) => {
         console.log(data);
         // saveAs(data, filename);
@@ -286,6 +293,7 @@ export class GenerateBillPaymentComponent implements OnInit {
     //     console.error(err);
     //   }
     // );
+    
   }
 
 }
